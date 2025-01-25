@@ -13,11 +13,21 @@ def binary_classification_metrics(prediction, ground_truth):
     recall = 0
     accuracy = 0
     f1 = 0
+    assert len(prediction) == len(ground_truth)
 
     # TODO: implement metrics!
     # Some helpful links:
     # https://en.wikipedia.org/wiki/Precision_and_recall
     # https://en.wikipedia.org/wiki/F1_score
+    tp = sum((prediction == ground_truth) & (prediction == True))
+    tn = sum((prediction == ground_truth) & (prediction == False))
+    fp = sum((prediction != ground_truth) & (prediction == True))
+    fn = sum((prediction != ground_truth) & (prediction == False))
+    
+    precision = tp / (tp + fp)
+    recall = tp/ (tp + fn)
+    accuracy = (tp + tn) / (tp + tn + fp + fn)
+    f1 = 2 * tp / (2 * tp + fp + fn)
     
     return precision, recall, f1, accuracy
 
@@ -33,5 +43,7 @@ def multiclass_accuracy(prediction, ground_truth):
     Returns:
     accuracy - ratio of accurate predictions to total samples
     '''
-    # TODO: Implement computing accuracy
-    return 0
+    assert len(prediction) == len(ground_truth)
+    
+    return sum(prediction == ground_truth) / len(prediction)
+  
